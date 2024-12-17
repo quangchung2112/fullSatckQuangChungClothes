@@ -24,5 +24,3 @@ Chọn cơ sở dữ liệu vừa tạo.
 Chuyển đến tab Import.
 Chọn file SQL từ thư mục my-fullstack-project/dataclothes.sql.
 Nhấn nút Go để nhập dữ liệu.
-
-
