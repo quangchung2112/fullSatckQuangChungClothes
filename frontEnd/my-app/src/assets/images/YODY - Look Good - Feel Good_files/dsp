@@ -1,0 +1,1 @@
+(function () { "use strict";var script = document.createElement("script"),head   = document.getElementsByTagName("head")[0];script.src = "//retagro.com/init?r="+Math.random();script.type="text/javascript";script.defer=true;script.async=true; head.appendChild(script);})();

@@ -1,0 +1,26 @@
+.container{
+    .outstanding{
+        display: flex;
+        a{
+            text-decoration: none;
+            color: black;
+      
+        }
+
+
+        .collection{
+            padding: 8px;
+         
+            .item-collection{
+
+                 img{
+                width: 100%;
+                height: 436px;
+                
+            }
+            }
+           
+        }
+    }
+   
+}

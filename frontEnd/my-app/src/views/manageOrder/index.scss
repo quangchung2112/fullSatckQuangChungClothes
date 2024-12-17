@@ -1,0 +1,30 @@
+textarea {
+    scrollbar-width: thin; /* Firefox */
+    scrollbar-color: #888 #f1f1f1; /* Firefox */
+  }
+  
+  textarea::-webkit-scrollbar {
+    width: 8px; /* Chiều rộng thanh cuộn */
+  }
+  
+  textarea::-webkit-scrollbar-track {
+    background: #f1f1f1; /* Màu nền của thanh cuộn */
+  }
+  
+  textarea::-webkit-scrollbar-thumb {
+    background: #888; /* Màu của thanh cuộn */
+    border-radius: 4px; /* Bo góc thanh cuộn */
+  }
+  
+  textarea::-webkit-scrollbar-thumb:hover {
+    background: #555; /* Màu khi hover */
+  }
+
+  .button-container {
+    display: flex;
+    justify-content: flex-start; /* Căn trái các nút */
+    flex-wrap: wrap; /* Cho phép các nút xuống dòng */
+    gap: 4px;/* Khoảng cách giữa các nút */
+    width: 100%; /* Đảm bảo chiều rộng của phần chứa đủ lớn */
+    margin: 10px 0px;
+  }

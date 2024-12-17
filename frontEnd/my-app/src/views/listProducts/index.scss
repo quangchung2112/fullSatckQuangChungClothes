@@ -1,0 +1,53 @@
+
+.container{
+   
+    .card{
+        border: none;
+        width: 268px;
+        height: 461px;
+        padding: 0px 6px;
+
+    .card-img-top{
+        border-radius: unset;
+    }
+        .card-body{
+            padding:10px 0px;
+            align-items: normal ;
+            gap: 10px;
+            // padding: 0;
+            .card-title{
+                text-overflow: ellipsis;
+                width: 100%;
+                overflow: hidden;
+                white-space: nowrap;
+              
+                margin: 0;
+            }
+            .card-text{
+                
+            }
+         
+            .card-color{
+                .item-color{
+                    width: 26px;
+                    height: 26px;
+                    // border: 1px solid black;
+                    border-radius: 50%;
+                    overflow: hidden;
+                    margin-right: 6px;
+
+                    img{
+                        // transform: translate(-60%,-68%);
+                        // scale: 6;
+                        transform: translate(-120%, 38%) scale(14);
+                      
+                    }
+                    &.active{
+                        border:1px solid black;
+                    }
+                }
+            }
+
+        }
+    }
+}

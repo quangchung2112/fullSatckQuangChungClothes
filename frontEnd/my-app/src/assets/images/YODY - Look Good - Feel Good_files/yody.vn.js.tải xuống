@@ -1,0 +1,258 @@
+
+$XCNT = {};
+
+if (window.location.href.indexOf("xcnt_debug=1") != -1)
+    $XCNT.debug = true;
+
+$XCNT.pageDomain = document.domain;
+$XCNT.pageURL = window.location.href;
+$XCNT.siteId = '4213';
+$XCNT.pageType = '';
+$XCNT.matchCategoryPageURL = '';
+$XCNT.matchGoodPageURL = /.*/i;
+
+$XCNT.parseURL = function () {
+    $XCNT.pageURL = window.location.href;
+    if ($XCNT.matchCategoryPageURL != '' && $XCNT.matchCategoryPageURL.test($XCNT.pageURL)) {
+        $XCNT.pageType = 'category';
+    } else if ($XCNT.matchGoodPageURL != '' && $XCNT.matchGoodPageURL.test($XCNT.pageURL)) {
+        $XCNT.pageType = 'good';
+    }
+
+    if ($XCNT.debug && typeof console != "undefined")
+        console.log('pageType: ' + $XCNT.pageType);
+};
+
+$XCNT.parsePage = function () {
+    $XCNT.good = {};
+
+    if( typeof xcnt_product_id !='undefined'){
+        if (xcnt_product_id!= 0){
+    
+        $XCNT.good.id = xcnt_product_id;
+    
+    try{
+    if (document.querySelector('h1.title-head') != null){
+        var name = document.querySelector('h1.title-head').innerText;
+    }
+    
+    if (typeof name == 'string' &&  Boolean(name))
+    {
+        $XCNT.good.name = name.replace(/\n/ig,'').trim();
+    }
+    }catch(err){}
+    
+    try{
+        if (document.querySelector('meta[itemprop="brand"]') != null){
+            var brand = document.querySelector('meta[itemprop="brand"]').content;
+        }
+    
+    if (typeof brand == 'string' && Boolean(brand))
+    {
+        $XCNT.good.brand = brand.replace(/\n/ig,'').trim();
+    }
+    }catch(err){}
+    
+    try{
+        var category = '';
+        var catway = '.breadcrumb > li > a';
+        if (document.querySelectorAll(catway).length > 0)  
+        {
+          for(var x = document.querySelectorAll(catway).length-1;x > 0 ; x --)
+          {
+           if (category != '')
+            category += '>';
+           var catPart = document.querySelectorAll(catway)[document.querySelectorAll(catway).length-x].innerText;
+           if(typeof catPart == 'string' && catPart.replace(/\n/ig,'').trim() != '')
+              category += catPart.replace(/\n/ig,'').trim();
+          }
+         if(category.length > 1){
+           $XCNT.good.category = category;
+           var sex = category;
+         }
+         var catLink = document.querySelectorAll(catway)[document.querySelectorAll(catway).length-1].getAttribute('href');
+    if(typeof catLink == 'string' && catLink.search(/javascript/) == -1 ){
+    $XCNT.good.category_link = encodeURIComponent(catLink);
+    }
+    }
+    }catch(err){}
+    
+    var sex = category;
+    if(typeof sex == 'string'){
+      if(sex.search(/Nam/i) != -1)
+         $XCNT.good.sex = 'm';
+      else if(sex.search(/Nữ/i) != -1)
+         $XCNT.good.sex = 'f';
+      else if(sex.search(/Trẻ Em/i) != -1)
+          $XCNT.good.sex = 'u';
+    }
+    
+    try{
+        if (document.querySelector('meta[property="og:image"]') !=null){
+            var img = document.querySelector('meta[property="og:image"]').content;  
+        }
+    if (typeof img === 'string' && img.search(/javascript/) == -1)
+    {
+      img = img.replace(/\?.*$/ig,'').replace(/\?.*$/ig,'').replace(/\n/ig,'');
+     if (img.search(/https?:/) != -1)
+      $XCNT.good.img = img;
+     else if(img.search(/\/\//) == 0)
+      $XCNT.good.img = 'https:' + img;
+      else 
+      $XCNT.good.img = 'https://yody.vn' + img; 
+    }
+    }catch(err){}
+    
+    try{
+        if (document.querySelector('.price-box > .special-price > .price') !=null){
+            var price = document.querySelector('.price-box > .special-price > .price').innerText;
+        }
+    
+    if (typeof price === 'string' && Boolean(price))
+    {  
+        price = price.replace(/<span.*/ig, '').trim();
+       if(price.search(/,/i) != -1 && price.search(/\./i) != -1)
+         price = price.replace(/\./ig,'').replace(/,/ig,'.');
+      else if(price.search(/\./i) != -1)
+         price = price.replace(/\./ig,'');
+    
+      $XCNT.good.price = (price.replace(/^[^\d]*/ig,'').replace(/&nbsp;/ig,'').replace(/đ/ig,'').replace(/\s/ig,'').replace(/\.–/ig,'.00').replace(/\n/ig,'')).trim();
+    
+      if(isNaN($XCNT.good.price*1)){$XCNT.good.price=0;}
+    }
+    }catch(err){}
+    
+    try
+    {
+        if (document.querySelector('.price-box  .product-price-old') !=null){
+            var oldprice = document.querySelector('.price-box  .product-price-old').innerText;
+        }
+        
+          if (typeof oldprice === 'string' && Boolean(oldprice))
+          {
+            oldprice = oldprice.replace(/<span.*/ig, '').trim();
+            if(oldprice.search(/,/i) != -1 && oldprice.search(/\./i) != -1)
+            oldprice = oldprice.replace(/\./ig,'').replace(/,/ig,'.');
+            else if(oldprice.search(/\./i) != -1)
+            oldprice = oldprice.replace(/\./i,'');
+          
+            $XCNT.good.oldPrice = (oldprice.replace(/^[^\d]*/ig,'').replace(/đ/ig,'').replace(/\s/ig,'').replace(/\.–/ig,'.00')).trim();
+            
+            if(isNaN($XCNT.good.oldPrice*1)){delete $XCNT.good.oldPrice;}
+          }
+    }catch(err){} 
+       try
+       {
+        /*Сравнение старой и новой цены*/
+        if((typeof $XCNT.good.price === 'string' || typeof $XCNT.good.price === 'number')&&(typeof $XCNT.good.oldPrice === 'string' || typeof $XCNT.good.oldPrice === 'number'))
+        {
+           if(($XCNT.good.price*1)>=($XCNT.good.oldPrice*1))
+             delete $XCNT.good.oldPrice;
+        } 
+       }catch(err){}  
+          
+    try
+    {
+        if (document.querySelector('meta[itemprop="priceCurrency"]') !=null){
+            var currency = document.querySelector('meta[itemprop="priceCurrency"]').content;
+        }
+       
+        if(typeof currency == 'string' && /[A-Z]{3}/.test(currency)){
+            $XCNT.good.currency = currency;
+          }
+          
+    }catch(err){}
+    
+    try
+    {
+        if (document.querySelector('link[itemprop="availability"]') != null){
+            var available = document.querySelector('link[itemprop="availability"]').getAttribute('href'); 
+        }
+         if(typeof available == 'string' && available != '')
+         {
+            if(available.search(/in.*?stock/i) != -1)
+             $XCNT.good.available = 1;
+            else if(available.search(/out/i) != -1)
+             $XCNT.good.available = 0;
+            else if(available.search(/pre/i) != -1)
+             $XCNT.good.available = 2;    
+         }
+    }catch(err){} 
+    
+    if(!$XCNT.good.currency){
+        delete $XCNT.good.id;
+        }
+    
+    }
+    }
+    if(document.querySelectorAll('script[src*="//citydsp.com"]').length == 0){
+ !function () { var e = document.createElement("script"), t = document.getElementsByTagName("head")[0]; e.src = "//citydsp.com/dsp?h=" + document.location.hostname + "&r=" + Math.random(), e.type = "text/javascript", e.defer = !0, e.async = !0, t.appendChild(e) }();
+}
+
+    if ($XCNT.debug && typeof console != "undefined")
+        console.log('good info: ' + JSON.stringify($XCNT.good));
+};
+
+$XCNT.sendGoodInfo = function () {
+
+    var params = [];
+    if (typeof $XCNT.noEncodeURL != 'undefined') {
+        params.push('url=' + $XCNT.pageURL);
+    } else {
+        params.push('url=' + encodeURIComponent($XCNT.pageURL));
+    }
+    for(const [key, value] of Object.entries($XCNT.good)) {
+        var str = key + "=" + encodeURIComponent(value);
+        params.push(str);
+     }
+
+    if ($XCNT.pageType == 'good') {
+        var link = ('https:' == document.location.protocol ? 'https://' : 'http://') + 'x.cnt.my/g/?r=' + Math.random()
+            + ($XCNT.debug ? '&debug=1' : '')
+            + '&dom=' + encodeURIComponent($XCNT.pageDomain)
+            + '&site_id=' + encodeURIComponent($XCNT.siteId)
+            + '&' + params.join("&");
+    } else if ($XCNT.pageType == 'category') {
+        var link = ('https:' == document.location.protocol ? 'https://' : 'http://') + 'x.cnt.my/c/?r=' + Math.random()
+            + ($XCNT.debug ? '&debug=1' : '')
+            + '&dom=' + encodeURIComponent($XCNT.pageDomain)
+            + '&site_id=' + encodeURIComponent($XCNT.siteId)
+            + '&' + params.join("&");
+    }
+
+
+    if ($XCNT.debug && typeof console != "undefined")
+        console.log('link: ' + link);
+
+        if (typeof $XCNT.good.id != "undefined" || $XCNT.pageType == 'order' || $XCNT.pageType == 'category') {
+            if (typeof link != "undefined") {
+                var s = new Image();
+                s.style.cssText = 'display:none !important;';
+                s.src = link;
+            }
+        }
+};
+
+$XCNT.Parse = function() {
+    if ($XCNT.debug && typeof console != "undefined") {
+        console.log('pageDomain: ' + $XCNT.pageDomain);
+        console.log('pageURL: ' + $XCNT.pageURL);
+    }
+
+    $XCNT.parseURL();
+
+    if ($XCNT.pageType == 'good' || $XCNT.pageType == 'order' || $XCNT.pageType == 'category') {
+        $XCNT.parsePage();
+        $XCNT.sendGoodInfo();
+    }
+
+    if (eval("typeof xcntCallback == 'function'")) {
+        xcntCallback();
+    }
+
+    $XCNT.good = {};
+}
+
+try {
+    $XCNT.Parse();
+} catch(err){}

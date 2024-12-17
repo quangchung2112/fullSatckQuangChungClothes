@@ -1,0 +1,34 @@
+.popularContainer{
+    .choosebtn{
+        button{
+            background-color: aliceblue;
+            // min-width: 110px;
+            border-radius: 30px;
+            margin: 0 10px 0;
+            border: none;
+            // height: 36px;
+            &.active{
+                background-color: #fcaf17;
+            }
+        }
+    }
+ .card{
+
+    .color{
+        // img{
+        //     width: 20px;
+        //     height: 20px;
+        //     border-radius: 50%;
+        //     margin: 0px 4px 0;
+        // }
+        span{
+            &.active{
+                border: 2px solid black;
+            }
+        }
+     
+    }
+ }
+
+    
+}

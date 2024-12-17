@@ -1,0 +1,40 @@
+.product-image-gallery {
+    display: flex;
+    flex-direction: row;
+    .main-image {
+      margin-bottom: 15px;
+      img {
+        width: 496px;
+        height: auto;
+        border: 1px solid #ccc;
+        border-radius: 8px;
+      }
+    }
+  
+    .thumbnail-container {
+  
+      .thumbnail {
+        width: 48px; // Set width for thumbnails
+        height: 64px; // Set height for thumbnails
+        object-fit: cover;
+        margin: 5px 5px;
+        cursor: pointer;
+        border: 2px solid transparent;
+        border-radius: 4px;
+        transition: border-color 0.3s;
+  
+        &:hover {
+          border-color: #666;
+        }
+  
+        &.active {
+          border-color: #007bff; // Highlight active thumbnail
+        }
+       
+      }
+
+      
+      
+      
+    }
+  }

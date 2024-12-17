@@ -1,0 +1,108 @@
+.container{
+    .list-images{
+     
+        span{
+            width: 48px;
+            height: 64px;
+            display: inline-block;
+            margin-bottom: 6px;
+            img{
+                width: 100%;
+                padding: 2px;
+                &.active{
+                    border: 1px solid black;
+                }
+            }
+
+           
+        }
+    }
+
+    .main-image{
+       
+        span{
+            width: 100%;
+            display: inline-block;
+            padding-left: 20px;
+
+            img{
+                width: 100%;
+            }
+        }    
+    }
+
+
+    .info-product{
+       padding-left: 30px;
+
+    .color{
+        width: 44px;
+        height: 44px;
+       display: inline-block;
+       border-radius: 50%;
+      overflow: hidden;
+
+      &.active{
+        border: 1px solid black;
+    }
+       
+       img{
+        width: 100%;
+        height: auto;
+        transform:translate(80%,70%) scale(14);
+        transform-origin: center;
+       
+       }
+      
+     }
+
+       .info-size{
+   
+            .size{
+                width: 44px;
+                height: 44px;
+                display: inline-block;
+                border: 1px solid #cfd7e3;
+                border-radius: 4px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                cursor: pointer;
+
+                &.active{
+                    background-color: #1c2430;
+                    color: white;
+                }
+            }
+       }
+
+       .count{
+        .item-count{
+            border: 1px solid;
+            width: 110px;
+            padding: 10px 10px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border-color: #cfd7e3;
+            .icon-btn{
+                border: none;
+                background-color: white;
+            
+            }
+    
+           
+            }
+
+            .shopping-cart{
+                background-color: white;
+                width: 442px;
+                padding: 8px;
+                border-radius: 8px;
+            }   
+       }
+      
+    }
+
+}

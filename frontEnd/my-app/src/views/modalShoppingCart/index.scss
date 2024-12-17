@@ -1,0 +1,65 @@
+// index.scss
+.modal-shopping-cart {
+    position: fixed;
+    z-index: 9999999999999999999999;
+    // top: 20%; // Vị trí modal
+    // right: 5%; // Vị trí modal
+    // transform: scale(1); // Bắt đầu với kích thước 1
+    transform: translate(26%, 4%) scale(1);
+    transition: transform 0.3s ease, opacity 0.3s ease; // Hiệu ứng chuyển động
+
+  }
+  
+  .modal.fade .modal-dialog {
+    transition: transform 0.3s ease-out, opacity 0.3s ease-out;
+    transform: scale(0.5); // Bắt đầu với kích thước nhỏ
+    opacity: 0; // Bắt đầu với độ mờ
+  }
+  
+  .modal.fade.show .modal-dialog {
+    transform: scale(1); // Kích thước đầy đủ khi mở
+    opacity: 1; // Đầy đủ độ mờ khi mở
+  }
+  
+  // Ngăn cuộn trang khi modal mở
+  body.modal-open {
+    overflow: hidden;
+  }
+  .modal-header {
+    border: none;
+  .first-header{
+    font-size: 16px;
+    border: none;
+    .icon-check{
+        color: #418954;
+        margin-top: 3px;
+    }
+  }
+  }
+  
+ 
+    .part-body{
+        border: none;
+        .image-product{
+            width: 70px;
+            img{
+                width: 100%;
+                object-fit: contain;
+            }
+           
+           
+        }
+        .info-product{
+            width: 100%;
+            margin-left: 10px  ;
+            p{
+                margin: 0px;
+            }
+        }
+      }
+  
+.modal-footer{
+    border: none;
+    display: flex;
+    flex-direction: column;
+}
